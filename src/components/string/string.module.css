@@ -1,0 +1,30 @@
+.stringInput {
+    display: flex;
+    gap: 12px;
+    width: 567px;
+}
+
+.stringInputButton {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 23px;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.inputComment {
+    text-align: left;
+    margin-top: 4px;
+    padding-left: 16px;
+}
+
+.line {
+    display: flex;
+    gap: 16px;
+    margin-top: 120px;
+}

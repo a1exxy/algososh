@@ -1,0 +1,21 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 48px;
+}
+.amimation {
+    height: 348px;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    gap: 10px;
+}
+.menu {
+    width: 924px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}

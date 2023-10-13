@@ -1,0 +1,56 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+
+}
+.inputElem {
+    width: 200px;
+    /*height: 82px;*/
+}
+
+.headerString {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    /*width: 950px;*/
+    gap: 12px;
+}
+
+.button {
+    width: 360px;
+}
+
+.headerStringheaderString {
+    margin-top: 12px;
+}
+
+.line {
+    display: flex;
+    /*height: 200px;*/
+    margin-top: 90px;
+    gap: 16px;
+    /*margin-top: 56px;*/
+    /*border: 1px solid red;*/
+}
+.lineBlock {
+    display: flex;
+}
+
+.headCircle {
+    /*padding-bottom: 34px;*/
+}
+.arrow {
+    padding-top: 30px;
+    padding-left: 16px;
+    /*border: 1px solid gainsboro;*/
+}
+
+.headBlock {
+    display: flex;
+
+    /*border: 1px solid red;*/
+}
+
