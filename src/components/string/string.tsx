@@ -22,6 +22,7 @@ export const StringComponent: React.FC = () => {
 			await delay(DELAY_IN_MS)
 		}
 		setRunning(false)
+		setInputString('')
 	}
 
 	const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
@@ -38,8 +39,8 @@ export const StringComponent: React.FC = () => {
 		<SolutionLayout title="Строка">
 			<div className={styles.container}>
 				<form className={styles.stringInput} onSubmit={handleSubmit}>
-					<Input maxLength={11} isLimitText={true} onChange={onChange}/>
-					<Button type={'submit'} text={'Развернуть'} isLoader={running}/>
+					<Input value={inputString} maxLength={11} isLimitText={true} onChange={onChange} />
+					<Button type={'submit'} text={'Развернуть'} isLoader={running} disabled={!inputString}/>
 				</form>
 				<div className={styles.line}>
 					{content?.map((item: TStrItem, index: number) =>

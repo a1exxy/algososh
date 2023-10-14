@@ -20,6 +20,7 @@ export const FibonacciPage: React.FC = () => {
 			await delay(SHORT_DELAY_IN_MS)
 		}
 		setRunning(false)
+		setInputNum(null)
 	}
 
 	const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
@@ -28,6 +29,7 @@ export const FibonacciPage: React.FC = () => {
 			fibonacci(inputNum, traceData)
 		}
 		play()
+
 	}
 
 	const onChange = (evt: ChangeEvent<HTMLInputElement>) => {
@@ -38,8 +40,8 @@ export const FibonacciPage: React.FC = () => {
 		<SolutionLayout title="Последовательность Фибоначчи">
 			<div className={styles.container}>
 				<form className={styles.stringInput} onSubmit={handleSubmit}>
-					<Input type={'number'} min={1} max={19} isLimitText={true} onChange={onChange}/>
-					<Button type={'submit'} text={'Рассчитать'} isLoader={running}/>
+					<Input value={inputNum ? inputNum : ''} type={'number'} min={1} max={19} isLimitText={true} onChange={onChange}/>
+					<Button type={'submit'} text={'Рассчитать'} isLoader={running} disabled={!inputNum}/>
 				</form>
 				<div className={styles.line}>
 					{content?.map((item: number, index: number) =>

@@ -11,6 +11,12 @@ import {Queue} from "../../algo/queue"
 
 const queueMaxSize = 7 // Размер очереди
 
+const defaultLoading = {
+	add: false,
+	del: false,
+	clear: false
+}
+
 type QueueType = {
 	value: string,
 	state: ElementStates,
@@ -19,6 +25,7 @@ type QueueType = {
 }
 
 export const QueuePage: React.FC = () => {
+	const [loading, setLoading] = useState(defaultLoading)
 	const [changingHead, setChangingHead] = useState(false)
 	const [changingTail, setChangingTail] = useState(false)
 	const [inputString, setInputString] = useState<string | null>(null)
@@ -53,7 +60,6 @@ export const QueuePage: React.FC = () => {
 	};
 
 	const push = () => {
-		console.log(`add (${inputString})`)
 		if (inputString) {
 			try {
 				queue.enqueue(inputString)
@@ -62,11 +68,11 @@ export const QueuePage: React.FC = () => {
 			} catch (e: any) {
 				console.info(e.message)
 			}
+			setLoading({...loading, add: true})
 		}
 	}
 
 	const pop = () => {
-		console.log(`del`)
 		try {
 			queue.dequeue()
 			setChangingHead(true)
@@ -74,12 +80,13 @@ export const QueuePage: React.FC = () => {
 		} catch (e: any) {
 			console.info(e.message)
 		}
+		setLoading({...loading, del: true})
 	}
 
 	const clear = () => {
-		console.log(`clear`)
 		queue.clear()
 		setRun(true)
+		setLoading({...loading, clear: true})
 	}
 
 	const play = async (): Promise<void> => {
@@ -89,6 +96,8 @@ export const QueuePage: React.FC = () => {
 		setChangingTail(false)
 		setContent(genContent())
 		setRun(false)
+		setInputString("")
+		setLoading(defaultLoading)
 	}
 
 	useEffect(() => {
@@ -99,10 +108,10 @@ export const QueuePage: React.FC = () => {
 		<SolutionLayout title="Очередь">
 			<div className={styles.container}>
 				<form className={styles.stringInput}>
-					<Input maxLength={4} isLimitText={true} onChange={onChange}/>
-					<Button text={'Добавить'} isLoader={changingHead || changingTail} onClick={push} disabled={!inputString}/>
-					<Button text={'Удалить'} isLoader={changingHead || changingTail} onClick={pop} disabled={!queue.count()}/>
-					<Button text={'Очистить'} isLoader={changingHead || changingTail} onClick={clear} disabled={!queue.count()}/>
+					<Input maxLength={4} isLimitText={true} onChange={onChange} value={inputString ? inputString : ""} disabled={run}/>
+					<Button text={'Добавить'} isLoader={loading.add} onClick={push} disabled={run || !inputString}/>
+					<Button text={'Удалить'} isLoader={loading.del} onClick={pop} disabled={run || queue.count() === 0}/>
+					<Button text={'Очистить'} isLoader={loading.clear} onClick={clear} disabled={run || queue.count() === 0}/>
 				</form>
 				<div className={styles.line}>
 					{content?.map((item: QueueType, index: number) =>

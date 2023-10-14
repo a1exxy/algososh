@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {SolutionLayout} from "../ui/solution-layout/solution-layout";
 import {Column} from "../ui/column/column";
 import styles from './sorting-page.module.css'
@@ -38,6 +38,11 @@ export const SortingPage: React.FC = () => {
 		setContent(genRandomArray())
 		traceData = [content!]
 	}
+
+	useEffect(() => {
+		randomArr()
+	}, []);
+
 	const play = async (): Promise<void> => {
 		for (let i = 0; i < traceData.length; i++) {
 			setContent(traceData[i])
@@ -70,9 +75,9 @@ export const SortingPage: React.FC = () => {
 					<RadioInput name={'sortType'} label={'Пузырёк'} onChange={setBubble} disabled={!!running}
 					            checked={orderType === TMethod.bubble}/>
 					<Button text={'По возрастанию'} sorting={Direction.Ascending} onClick={onAscSort}
-					        isLoader={running === Direction.Ascending}/>
+					        isLoader={running === Direction.Ascending} disabled={!!running} />
 					<Button text={'По убыванию'} sorting={Direction.Descending} onClick={onDescSort}
-					        isLoader={running === Direction.Descending}/>
+					        isLoader={running === Direction.Descending} disabled={!!running}/>
 					<Button text={'Новый массив'} onClick={randomArr} disabled={!!running}/>
 				</div>
 				<div className={styles.amimation}>

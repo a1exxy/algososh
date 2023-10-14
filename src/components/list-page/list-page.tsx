@@ -19,15 +19,34 @@ type listItemType = {
 	state?: ElementStates
 }
 
-// const testData = ["1", "2", "3"]
+const firstElementsCount = 5 // кол-во начальных элементов
+
+const generateRandomArray = (): Array<string> => {
+	return Math.floor(Math.random() * Date.now()).toString(36).split('').slice(0, firstElementsCount);
+};
+
+const defaultLoading = {
+	addHead: false,
+	addTail: false,
+	delHead: false,
+	delTail: false,
+	addIndex: false,
+	delIndex: false
+}
 
 export const ListPage: React.FC = () => {
 	let traceData: Array<Array<listItemType>> = []
+	const [loading, setLoading] = useState(defaultLoading)
 	const [inputValue, setInputValue] = useState<string | null>(null)
 	const [inputIndex, setInputIndex] = useState<number | null>(null)
 	const [run, setRun] = useState(false)
 	const [content, setContent] = useState<Array<listItemType>>([])
-	const list = useMemo(() => new LinkedList<string>(), []);
+	const list = useMemo(() => new LinkedList<string>(generateRandomArray()), []);
+	const [max, setMax] = useState(firstElementsCount - 1)
+
+	useEffect(() => {
+		setMax(list.getSize() - 1)
+	}, [run]);
 
 	const onChangeValue = (evt: ChangeEvent<HTMLInputElement>) => {
 		setInputValue(evt.target.value)
@@ -69,7 +88,6 @@ export const ListPage: React.FC = () => {
 		return true
 	}
 
-
 	const onAddHead = () => {
 		if (inputValue) {
 			traceData.push(getValue())
@@ -80,6 +98,7 @@ export const ListPage: React.FC = () => {
 			traceData[2][0] = {...traceData[2][0], state: ElementStates.Modified}
 			traceData.push(getValue())
 			setRun(true)
+			setLoading({...loading, addHead: true})
 			play()
 		}
 	}
@@ -98,6 +117,7 @@ export const ListPage: React.FC = () => {
 			traceData[2][traceData[2].length - 1] = {...traceData[2][traceData[2].length - 1], state: ElementStates.Modified}
 			traceData.push(getValue()) //3
 			setRun(true)
+			setLoading({...loading, addTail: true})
 			play()
 		}
 	}
@@ -109,6 +129,7 @@ export const ListPage: React.FC = () => {
 		list.delete(0)
 		traceData.push(getValue())
 		setRun(true)
+		setLoading({...loading, delHead: true})
 		play()
 	}
 
@@ -123,6 +144,7 @@ export const ListPage: React.FC = () => {
 		list.pop()
 		traceData.push(getValue())
 		setRun(true)
+		setLoading({...loading, delTail: true})
 		play()
 	}
 
@@ -132,6 +154,7 @@ export const ListPage: React.FC = () => {
 		if ((inputIndex || inputIndex == 0) && inputIndex <= list.getSize()) return true
 		return false
 	}
+
 	const onAddIndex = () => {
 		if (checkValue() && checkIndex()) {
 			traceData.push(getValue())
@@ -145,6 +168,7 @@ export const ListPage: React.FC = () => {
 			list.insert(inputIndex!, inputValue!)
 			traceData.push(getValue())
 			setRun(true)
+			setLoading({...loading, addIndex: true})
 			play()
 		}
 	}
@@ -154,7 +178,7 @@ export const ListPage: React.FC = () => {
 			traceData.push(getValue())
 			for (let i = 0; i <= inputIndex!; i++) {
 				traceData.push(getValue())
-				for(let j=0; j<i;j++){
+				for (let j = 0; j < i; j++) {
 					last()[j] = {...last()[j], state: ElementStates.Modified}
 				}
 			}
@@ -163,12 +187,12 @@ export const ListPage: React.FC = () => {
 			list.delete(inputIndex!)
 			traceData.push(getValue())
 			setRun(true)
+			setLoading({...loading, delIndex: true})
 			play()
 		}
 	}
 
 	const play = async (): Promise<void> => {
-		console.log(`RUN PLAY`)
 		for (let i = 0; i < traceData.length; i++) {
 			setContent(traceData[i])
 			await delay(SHORT_DELAY_IN_MS) // 500мс
@@ -176,6 +200,9 @@ export const ListPage: React.FC = () => {
 		}
 		setRun(false)
 		traceData = []
+		setInputIndex(null)
+		setInputValue(null)
+		setLoading(defaultLoading)
 	}
 
 	useEffect(() => {
@@ -187,19 +214,42 @@ export const ListPage: React.FC = () => {
 			<div className={styles.container}>
 				<form className={styles.header}>
 					<div className={styles.headerString}>
-						<Input max={4} maxLength={4} isLimitText={true} onChange={onChangeValue} extraClass={styles.inputElem}/>
-						<Button isLoader={run} text={'Добавить в head'} onClick={onAddHead} disabled={!inputValue?.length}/>
-						<Button isLoader={run} text={'Добавить в tail'} onClick={onAddTail} disabled={!inputValue?.length}/>
-						<Button isLoader={run} text={'Удалить из head'} onClick={onDelHead} disabled={!(list.getSize() > 0)}/>
-						<Button isLoader={run} text={'Удалить из tail'} onClick={onDelTail} disabled={!(list.getSize() > 0)}/>
+						<Input maxLength={4} isLimitText={true} onChange={onChangeValue} extraClass={styles.inputElem}
+						       value={inputValue ? inputValue : ""} disabled={run}/>
+						<Button isLoader={loading.addHead} text={'Добавить в head'} onClick={onAddHead}
+						        disabled={!inputValue?.length || run}/>
+						<Button isLoader={loading.addTail} text={'Добавить в tail'} onClick={onAddTail}
+						        disabled={!inputValue?.length || run}/>
+						<Button isLoader={loading.delHead} text={'Удалить из head'} onClick={onDelHead}
+						        disabled={!(list.getSize() > 0) || run}/>
+						<Button isLoader={loading.delTail} text={'Удалить из tail'} onClick={onDelTail}
+						        disabled={!(list.getSize() > 0) || run}/>
 					</div>
 					<div className={`${styles.headerString} ${styles.headerStringheaderString}`}>
-						<Input type="number" min={0} placeholder={'Введите индекс'} onChange={onChangeIndex}
-						       extraClass={styles.inputElem}/>
-						<Button isLoader={run} text={'Добавить по индексу'} onClick={onAddIndex} extraClass={`${styles.button}`}
-						        disabled={!(inputIndex || inputIndex == 0)}/>
-						<Button isLoader={run} text={'Удалить по индексу'} onClick={onDelIndex} extraClass={styles.button}
-						        disabled={!((inputIndex || inputIndex == 0) && list.getSize() > 0)}/>
+						<Input
+							type="number"
+							min={0}
+							max={max}
+							placeholder={'Введите индекс'}
+							onChange={onChangeIndex}
+							extraClass={styles.inputElem}
+							value={inputIndex || inputIndex == 0 ? inputIndex : ''}
+							disabled={run}
+						/>
+						<Button
+							isLoader={loading.addIndex}
+							text={'Добавить по индексу'}
+							onClick={onAddIndex}
+							extraClass={`${styles.button}`}
+							disabled={!(inputValue?.length && (inputIndex || inputIndex == 0)) || run}
+						/>
+						<Button
+							isLoader={loading.delIndex}
+							text={'Удалить по индексу'}
+							onClick={onDelIndex}
+							extraClass={styles.button}
+							disabled={!((inputIndex || inputIndex == 0) && list.getSize() > 0) || run}
+						/>
 					</div>
 				</form>
 				<div className={styles.line}>

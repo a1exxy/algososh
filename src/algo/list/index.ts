@@ -106,7 +106,7 @@ export class LinkedList<T> {
 	delete(index: number) {
 		// console.log(`[RUN delete] index: ${index}`)
 		// console.log('!!!pre dump:')
-		this.dump()
+		// this.dump()
 		if (this.head === null) {
 			throw Error('Список пуст')
 		}
@@ -123,7 +123,7 @@ export class LinkedList<T> {
 		} else {
 			// console.log(3)
 			const item = this.getElem(index - 1)!
-			console.log(`item: ${item.value}`)
+			// console.log(`item: ${item.value}`)
 			if (item.next?.next) {
 				// console.log(4)
 				item.next = item.next.next
