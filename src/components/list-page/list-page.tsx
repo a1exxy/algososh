@@ -241,7 +241,7 @@ export const ListPage: React.FC = () => {
 							text={'Добавить по индексу'}
 							onClick={onAddIndex}
 							extraClass={`${styles.button}`}
-							disabled={!(inputValue?.length && (inputIndex || inputIndex == 0)) || run}
+							disabled={!(inputValue?.length && (inputIndex || inputIndex == 0) && (list.getSize() > 0 && inputIndex < list.getSize() && inputIndex >= 0) ) || run}
 						/>
 						<Button
 							isLoader={loading.delIndex}
