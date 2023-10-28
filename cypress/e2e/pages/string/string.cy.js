@@ -17,7 +17,7 @@ describe('7: Строка', () => {
   }
 
   beforeEach(() => {
-    cy.visit('http://localhost:3000/recursion')
+    cy.visit('recursion')
   })
 
   it('7.1: если в инпуте пусто, то кнопка добавления недоступна', () => {

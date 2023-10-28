@@ -4,9 +4,12 @@ import {changingColor, defaultColor, modifiedColor} from "../../../../src/tests/
 
 describe('11: Список ', () => {
   const testData = 'TST'
+  const circle = 'div[class^="circle_circle__"]'
+  const letter = 'p[class*="circle_letter__"]'
+  const content = 'div[class^="circle_content__"]'
   beforeEach(() => {
     cy
-      .visit('http://localhost:3000/list')
+      .visit('list')
       .get('input').first().as('value')
       .get('input').last().as('index')
       .get('button:contains(Добавить в head)').as('add_head')
@@ -16,7 +19,6 @@ describe('11: Список ', () => {
       .get('button:contains(Добавить по индексу)').as('add_index')
       .get('button:contains(Удалить по индексу)').as('del_index')
       .get('div[class^="list-page_line__"]').as('line')
-
   })
 
   it('11.1: если в инпуте пусто, то кнопка добавления недоступна, кнопки добавления по индексу и удаления по индексу недоступны тоже', () => {
@@ -37,15 +39,15 @@ describe('11: Список ', () => {
     cy
       .get('@value').type(testData)
       .get('@add_head').click()
-      .get('div[class^="circle_content__"]').first().within((item) => {
+      .get(content).first().within((item) => {
       cy.wrap(item).get('div').first().within(el => {
         cy.wrap(el)
           .get('p').first().should('contain', testData)
-          .get('div[class^="circle_circle__"]').should('have.css', 'border-color', changingColor)
+          .get(circle).should('have.css', 'border-color', changingColor)
       })
       cy
         .wait(1000)
-        .wrap(item).get('div[class^="circle_circle__"]').should('have.css', 'border-color', defaultColor)
+        .wrap(item).get(circle).should('have.css', 'border-color', defaultColor)
         .wrap(item).get('p').first().should('contain', testData)
     })
   })
@@ -55,22 +57,22 @@ describe('11: Список ', () => {
       .get('@value').type(testData)
       .get('@add_tail').click()
       .wait(500)
-      .get('div[class^="circle_content__"]').last().within((item) => {
-      cy.wrap(item).get('div[class^="circle_circle__"]').first()
+      .get(content).last().within((item) => {
+      cy.wrap(item).get(circle).first()
         .should('have.css', 'border-color', changingColor)
         .get('p').first().should('contain', testData)
     })
       .wait(500)
-      .get('div[class^="circle_content__"]').last().within((item) => {
+      .get(content).last().within((item) => {
       cy.wrap(item)
-        .get('p[class*="circle_letter__"]').should('contain', testData)
-        .get('div[class^="circle_circle__"]').should('have.css', 'border-color', modifiedColor)
+        .get(letter).should('contain', testData)
+        .get(circle).should('have.css', 'border-color', modifiedColor)
     })
       .wait(500)
-      .get('div[class^="circle_content__"]').last().within((item) => {
+      .get(content).last().within((item) => {
       cy.wrap(item)
-        .get('p[class*="circle_letter__"]').should('contain', testData)
-        .get('div[class^="circle_circle__"]').should('have.css', 'border-color', defaultColor)
+        .get(letter).should('contain', testData)
+        .get(circle).should('have.css', 'border-color', defaultColor)
     })
   })
 
@@ -80,16 +82,16 @@ describe('11: Список ', () => {
       .get('@index').type(0)
       .get('@add_index').click()
       .wait(500)
-      .get('div[class^="circle_content__"]').first().within((item) => {
-      cy.wrap(item).get('div[class^="circle_circle__"]').first()
+      .get(content).first().within((item) => {
+      cy.wrap(item).get(circle).first()
         .should('have.css', 'border-color', changingColor)
         .get('p').first().should('contain', testData)
     })
       .wait(500)
-      .get('div[class^="circle_content__"]').first().within((item) => {
+      .get(content).first().within((item) => {
       cy.wrap(item)
-        .get('p[class*="circle_letter__"]').should('contain', testData)
-        .get('div[class^="circle_circle__"]').should('have.css', 'border-color', defaultColor)
+        .get(letter).should('contain', testData)
+        .get(circle).should('have.css', 'border-color', defaultColor)
     })
   })
 
@@ -100,18 +102,18 @@ describe('11: Список ', () => {
       .wait(1000)
       .get('@del_head').click()
       .wait(500)
-      .get('div[class^="circle_content__"]').first().within((item) => {
-      cy.wrap(item).get('div[class^="circle_circle__"]').first()
+      .get(content).first().within((item) => {
+      cy.wrap(item).get(circle).first()
         .should('have.css', 'border-color', defaultColor)
         .get('p').first().should('contain', '')
-        .get('div[class^="circle_circle__"]').last().should('have.css', 'border-color', changingColor)
-        .get('p[class*="circle_letter__"]').last().should('contain', testData)
+        .get(circle).last().should('have.css', 'border-color', changingColor)
+        .get(letter).last().should('contain', testData)
     })
       .wait(500)
-      .get('div[class^="circle_content__"]').first().within((item) => {
+      .get(content).first().within((item) => {
       cy.wrap(item)
-        .get('p[class*="circle_letter__"]').should('not.contain', testData)
-        .get('div[class^="circle_circle__"]').should('have.css', 'border-color', defaultColor)
+        .get(letter).should('not.contain', testData)
+        .get(circle).should('have.css', 'border-color', defaultColor)
     })
   })
   it('11.7: удаления элемента из tail', () => {
@@ -126,12 +128,12 @@ describe('11: Список ', () => {
         .should('have.css', 'border-color', defaultColor)
         .get('p').first().should('contain', '')
     })
-      .get('div[class^="circle_circle__"]').last().within(el => {
+      .get(circle).last().within(el => {
       cy.wrap(el).should('have.css', 'border-color', changingColor)
         .get('p').last().should('contain', testData)
     })
       .wait(500)
-      .get('div[class^="circle_circle__"]').last().within(el => {
+      .get(circle).last().within(el => {
       cy.wrap(el).should('have.css', 'border-color', defaultColor)
         .get('p').last().should('not.contain', testData)
     })
@@ -145,18 +147,18 @@ describe('11: Список ', () => {
       .get('@index').type(0)
       .get('@del_index').click()
       .wait(500)
-      .get('div[class^="circle_content__"]').first().within((item) => {
-      cy.wrap(item).get('div[class^="circle_circle__"]').first()
+      .get(content).first().within((item) => {
+      cy.wrap(item).get(circle).first()
         .should('have.css', 'border-color', defaultColor)
         .get('p').first().should('contain', '')
-        .get('div[class^="circle_circle__"]').last().should('have.css', 'border-color', changingColor)
-        .get('p[class*="circle_letter__"]').last().should('contain', testData)
+        .get(circle).last().should('have.css', 'border-color', changingColor)
+        .get(letter).last().should('contain', testData)
     })
       .wait(500)
-      .get('div[class^="circle_content__"]').first().within((item) => {
+      .get(content).first().within((item) => {
       cy.wrap(item)
-        .get('p[class*="circle_letter__"]').should('not.contain', testData)
-        .get('div[class^="circle_circle__"]').should('have.css', 'border-color', defaultColor)
+        .get(letter).should('not.contain', testData)
+        .get(circle).should('have.css', 'border-color', defaultColor)
     })
   })
 })

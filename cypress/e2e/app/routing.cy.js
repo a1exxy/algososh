@@ -1,6 +1,6 @@
 describe('6: Тестирование переходов по страницам', () => {
   beforeEach( () => {
-    cy.visit('http://localhost:3000')
+    cy.visit('')
   })
   it('6.1: страница "Cтрока"', () => {
     cy.get('a[href="/recursion"]').click().get('h3').contains('Строка')

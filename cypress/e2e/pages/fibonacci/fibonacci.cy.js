@@ -1,7 +1,7 @@
 describe('8: Фибоначчи', () => {
 
   beforeEach(() => {
-    cy.visit('http://localhost:3000/fibonacci')
+    cy.visit('fibonacci')
   })
 
   it('8.1: если в инпуте пусто, то кнопка добавления недоступна', () => {

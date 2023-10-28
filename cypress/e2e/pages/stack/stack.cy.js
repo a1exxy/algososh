@@ -2,13 +2,13 @@
 import {changingColor, defaultColor} from "../../../../src/tests/utils";
 
 describe('9: Стек', () => {
-
+  const block = 'div[class^="stack-page_line__"] > div'
   const addItem = (item) => {
     cy.get('input').first().type(item).get('@add').click()
   }
 
   beforeEach(() => {
-    cy.visit('http://localhost:3000/stack')
+    cy.visit('stack')
     cy.get('button:contains(Добавить)').as('add')
   })
 
@@ -21,12 +21,13 @@ describe('9: Стек', () => {
   })
 
   it('9.2: правильность добавления элемента в стек', () => {
+    const circle = 'div[class^="circle_circle__"]'
     addItem('1')
     cy
       .get('div[class^="circle_circle__"] > p').should('contain', '1')
-      .get('div[class^="circle_circle__"]').should('have.css', 'border-color', changingColor)
+      .get(circle).should('have.css', 'border-color', changingColor)
       .wait(500)
-      .get('div[class^="circle_circle__"]').should('have.css', 'border-color', defaultColor)
+      .get(circle).should('have.css', 'border-color', defaultColor)
   })
 
   it('9.3: правильность удаления элемента из стека', () => {
@@ -34,7 +35,7 @@ describe('9: Стек', () => {
     cy
       .wait(500)
       .get('button:contains(Удалить)').click()
-      .get('div[class^="stack-page_line__"] > div').should('not.exist')
+      .get(block).should('not.exist')
   })
 
   it('9.4: поведение кнопки «Очистить»', () => {
@@ -43,6 +44,6 @@ describe('9: Стек', () => {
     cy
       .wait(1000)
       .get('button:contains(Очистить)').click()
-      .get('div[class^="stack-page_line__"] > div').should('not.exist')
+      .get(block).should('not.exist')
   })
 })

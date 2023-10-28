@@ -3,11 +3,13 @@
 import {changingColor, defaultColor} from "../../../../src/tests/utils";
 
 describe('10: Очередь', () => {
+  const circle = 'div[class^="circle_circle__"]'
+  const paragraph = 'div[class^="queue-page_line__"] > div > div > p'
   const addItem = (item) => {
     cy.get('input').first().type(item).get('@add').click()
   }
   beforeEach(() => {
-    cy.visit('http://localhost:3000/queue')
+    cy.visit('queue')
     cy.get('button:contains(Добавить)').as('add')
   })
   it('10.1: если в инпуте пусто, то кнопка добавления недоступна', () => {
@@ -21,8 +23,8 @@ describe('10: Очередь', () => {
   it('10.2: правильность добавления элемента в очередь', () => {
     addItem('1')
     cy
-      .get('div[class^="queue-page_line__"] > div > div > p').first().should('contain','1')
-      .get('div[class^="circle_circle__"]').first().as('item')
+      .get(paragraph).first().should('contain', '1')
+      .get(circle).first().as('item')
       .get('@item').should('have.css', 'border-color', changingColor)
       .wait(500)
       .get('@item').should('have.css', 'border-color', defaultColor)
@@ -32,11 +34,11 @@ describe('10: Очередь', () => {
     cy.wait(1000)
     cy
       .get('button:contains(Удалить)').click()
-      .get('div[class^="circle_circle__"]').first().should('have.css', 'border-color', defaultColor)
+      .get(circle).first().should('have.css', 'border-color', defaultColor)
       .get('div[class^="circle_content__"]:contains(1) > div[class^="circle_circle__"]').should('have.css', 'border-color', changingColor)
       .wait(500)
-      .get('div[class^="queue-page_line__"] > div > div > p').should('contain','')
-      .get('div[class^="circle_circle__"]').should('have.css', 'border-color', defaultColor)
+      .get(paragraph).should('contain', '')
+      .get(circle).should('have.css', 'border-color', defaultColor)
   })
   it('10.4: поведение кнопки «Очистить»', () => {
     addItem('1')
@@ -45,7 +47,7 @@ describe('10: Очередь', () => {
     cy.wait(1000)
     cy
       .get('button:contains(Очистить)').click()
-      .get('div[class^="queue-page_line__"] > div > div > p').should('contain','')
-      .get('div[class^="circle_circle__"]').should('have.css', 'border-color', defaultColor)
+      .get(paragraph).should('contain', '')
+      .get(circle).should('have.css', 'border-color', defaultColor)
   })
 })
