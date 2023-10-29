@@ -1,9 +1,8 @@
 // Очередь
 
-import {changingColor, defaultColor} from "../../../../src/tests/utils";
+import {changingColor, defaultColor, circle} from "../../../../src/tests/utils";
 
 describe('10: Очередь', () => {
-  const circle = 'div[class^="circle_circle__"]'
   const paragraph = 'div[class^="queue-page_line__"] > div > div > p'
   const addItem = (item) => {
     cy.get('input').first().type(item).get('@add').click()

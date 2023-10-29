@@ -1,10 +1,9 @@
 // Список
 
-import {changingColor, defaultColor, modifiedColor} from "../../../../src/tests/utils";
+import {changingColor, defaultColor, modifiedColor, circle} from "../../../../src/tests/utils";
 
 describe('11: Список ', () => {
   const testData = 'TST'
-  const circle = 'div[class^="circle_circle__"]'
   const letter = 'p[class*="circle_letter__"]'
   const content = 'div[class^="circle_content__"]'
   beforeEach(() => {
@@ -79,7 +78,7 @@ describe('11: Список ', () => {
   it('11.5: добавления элемента по индексу', () => {
     cy
       .get('@value').type(testData)
-      .get('@index').type(0)
+      .get('@index').type('0')
       .get('@add_index').click()
       .wait(500)
       .get(content).first().within((item) => {
@@ -144,7 +143,7 @@ describe('11: Список ', () => {
       .get('@value').type(testData)
       .get('@add_head').click()
       .wait(1000)
-      .get('@index').type(0)
+      .get('@index').type('0')
       .get('@del_index').click()
       .wait(500)
       .get(content).first().within((item) => {

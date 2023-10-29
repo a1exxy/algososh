@@ -1,3 +1,5 @@
+import {circleLetter} from "../../../../src/tests/utils";
+
 describe('8: Фибоначчи', () => {
 
   beforeEach(() => {
@@ -15,6 +17,6 @@ describe('8: Фибоначчи', () => {
 
   it('8.2: числа генерируются корректно', () => {
     cy.get('input').first().type('7').get('button').last().click().wait(4000)
-    cy.get('div[class^="circle_circle__"] > p').last().should('contain', '21')
+    cy.get(circleLetter).last().should('contain', '21')
   })
 })

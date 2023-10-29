@@ -1,6 +1,6 @@
 // Строка
 
-import {changingColor, defaultColor, modifiedColor} from "../../../../src/tests/utils";
+import {changingColor, circle, circleLetter, defaultColor, modifiedColor} from "../../../../src/tests/utils";
 
 describe('7: Строка', () => {
   const data = {
@@ -30,8 +30,8 @@ describe('7: Строка', () => {
   })
 
   it('7.2: строка разворачивается корректно', () => {
-    const getCircles = () => cy.get('div[class^="circle_circle__"]')
-    const getValues = () => cy.get('div[class^="circle_circle__"] > p')
+    const getCircles = () => cy.get(circle)
+    const getValues = () => cy.get(circleLetter)
     const checkValues = (values) => {
       getValues().each((item, index) =>
         cy.wrap(item).should('contain', `${values.slice(index, index + 1)}`)

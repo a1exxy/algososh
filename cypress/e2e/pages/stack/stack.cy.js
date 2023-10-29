@@ -1,5 +1,5 @@
 // Стек
-import {changingColor, defaultColor} from "../../../../src/tests/utils";
+import {changingColor, circleLetter, defaultColor, circle} from "../../../../src/tests/utils";
 
 describe('9: Стек', () => {
   const block = 'div[class^="stack-page_line__"] > div'
@@ -21,10 +21,9 @@ describe('9: Стек', () => {
   })
 
   it('9.2: правильность добавления элемента в стек', () => {
-    const circle = 'div[class^="circle_circle__"]'
     addItem('1')
     cy
-      .get('div[class^="circle_circle__"] > p').should('contain', '1')
+      .get(circleLetter).should('contain', '1')
       .get(circle).should('have.css', 'border-color', changingColor)
       .wait(500)
       .get(circle).should('have.css', 'border-color', defaultColor)
