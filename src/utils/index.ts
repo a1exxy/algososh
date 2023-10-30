@@ -7,8 +7,4 @@ const delay = (ms: number) => {
 // Глубокое копирование
 const deepCopy = (source: any): any => JSON.parse(JSON.stringify(source))
 
-
-
-
-
-export {delay, deepCopy, }
+export {delay, deepCopy}
